@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DesignLayout } from "@/components/builder/design/DesignLayout";
-import { useBuilderStore, formatFtIn, DesignStyle } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, DesignStyle, isDesignStyle } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,10 @@ export default function StylePage() {
             value={designStyle}
             onChange={(e) => {
               setShowError(false);
-              setDesignStyle(e.target.value as DesignStyle);
+              const value = e.target.value;
+              if (isDesignStyle(value)) {
+                setDesignStyle(value);
+              }
             }}
             placeholder="Select an option"
             id="door-style"

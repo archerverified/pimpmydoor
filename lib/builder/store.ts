@@ -122,10 +122,42 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
 }));
 
 /**
- * Type guard for DesignCollection
+ * Type guards for builder option types
  */
 export function isDesignCollection(value: string): value is DesignCollection {
   return value === "" || value === "Traditional" || value === "Modern" || value === "Carriage House";
+}
+
+export function isDesignStyle(value: string): value is DesignStyle {
+  return value === "" || value === "Raised Panel" || value === "Flush" || value === "Grooved";
+}
+
+export function isDesignColor(value: string): value is DesignColor {
+  return value === "" || value === "White" || value === "Almond" || value === "Black";
+}
+
+export function isTrackSpringType(value: string): value is TrackSpringType {
+  return value === "" || value === "Torsion" || value === "Extension";
+}
+
+export function isTrackLiftType(value: string): value is TrackLiftType {
+  return value === "" || value === "Standard Lift" || value === "High Lift";
+}
+
+export function isTrackWindLoad(value: string): value is TrackWindLoad {
+  return value === "" || value === "None" || value === "Wind Reinforced";
+}
+
+export function isExtrasWindows(value: string): value is ExtrasWindows {
+  return value === "" || value === "No Windows" || value === "Top Panel Windows" || value === "Full View (Glass)";
+}
+
+export function isExtrasInsulation(value: string): value is ExtrasInsulation {
+  return value === "" || value === "None" || value === "Polystyrene (R6-R9)" || value === "Polyurethane (R12-R18)";
+}
+
+export function isExtrasHardware(value: string): value is ExtrasHardware {
+  return value === "" || value === "None" || value === "Handles + Hinges (Black)" || value === "Handles + Hinges (Bronze)";
 }
 
 /**

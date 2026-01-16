@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrackLayout } from "@/components/builder/track/TrackLayout";
-import { useBuilderStore, formatFtIn, TrackSpringType } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, TrackSpringType, isTrackSpringType } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -42,7 +42,10 @@ export default function SpringsPage() {
             value={trackSpringType}
             onChange={(e) => {
               setShowError(false);
-              setTrackSpringType(e.target.value as TrackSpringType);
+              const value = e.target.value;
+              if (isTrackSpringType(value)) {
+                setTrackSpringType(value);
+              }
             }}
             placeholder="Select an option"
             id="spring-type"

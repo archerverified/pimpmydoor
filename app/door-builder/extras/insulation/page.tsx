@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
-import { useBuilderStore, formatFtIn, ExtrasInsulation } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, ExtrasInsulation, isExtrasInsulation } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,10 @@ export default function InsulationPage() {
             value={extrasInsulation}
             onChange={(e) => {
               setShowError(false);
-              setExtrasInsulation(e.target.value as ExtrasInsulation);
+              const value = e.target.value;
+              if (isExtrasInsulation(value)) {
+                setExtrasInsulation(value);
+              }
             }}
             placeholder="Select an option"
             id="extras-insulation"

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
-import { useBuilderStore, formatFtIn, ExtrasWindows } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, ExtrasWindows, isExtrasWindows } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -42,7 +42,10 @@ export default function WindowsPage() {
             value={extrasWindows}
             onChange={(e) => {
               setShowError(false);
-              setExtrasWindows(e.target.value as ExtrasWindows);
+              const value = e.target.value;
+              if (isExtrasWindows(value)) {
+                setExtrasWindows(value);
+              }
             }}
             placeholder="Select an option"
             id="extras-windows"

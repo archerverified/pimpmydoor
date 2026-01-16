@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
-import { useBuilderStore, formatFtIn, ExtrasHardware } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, ExtrasHardware, isExtrasHardware } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,10 @@ export default function HardwarePage() {
             value={extrasHardware}
             onChange={(e) => {
               setShowError(false);
-              setExtrasHardware(e.target.value as ExtrasHardware);
+              const value = e.target.value;
+              if (isExtrasHardware(value)) {
+                setExtrasHardware(value);
+              }
             }}
             placeholder="Select an option"
             id="extras-hardware"
