@@ -78,7 +78,13 @@ export const useCartStore = create<CartStore>()(
             if (parsed && Array.isArray(parsed.state?.items)) {
               // Validate each item has required fields
               const isValid = parsed.state.items.every(
-                (item: any) => item && typeof item.lineItemId === "string" && typeof item.configurationId === "string"
+                (item: unknown) => 
+                  item !== null &&
+                  typeof item === "object" &&
+                  "lineItemId" in item &&
+                  "configurationId" in item &&
+                  typeof (item as { lineItemId: unknown }).lineItemId === "string" &&
+                  typeof (item as { configurationId: unknown }).configurationId === "string"
               );
               if (isValid) {
                 return parsed;
