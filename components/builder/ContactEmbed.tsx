@@ -2,10 +2,11 @@
 
 import { useState, FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
+import type { DoorConfiguration } from "@/lib/cart/types";
 
 interface ContactEmbedProps {
   orderPayload: {
-    configuration: any;
+    configuration: DoorConfiguration;
     unitPriceCents: number;
   };
   onSuccess: () => void;

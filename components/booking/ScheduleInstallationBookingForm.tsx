@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/booking/ui
 import { Calendar } from "@/components/booking/ui/calendar";
 import { cn } from "@/components/booking/ui/utils";
 import { formatFtIn } from "@/lib/builder/store";
+import type { DoorConfiguration } from "@/lib/cart/types";
 
 function formatCurrency(cents: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -19,7 +20,7 @@ function formatCurrency(cents: number): string {
 
 interface ScheduleInstallationBookingFormProps {
   orderPayload: {
-    configuration: any;
+    configuration: DoorConfiguration;
     configurationId: string;
     lineItemId: string;
     unitPriceCents: number;
