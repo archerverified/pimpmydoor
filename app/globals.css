@@ -1,0 +1,74 @@
+/*
+ * Pimp My Door - Design System
+ * =============================
+ * Project Analysis:
+ * - Framework: Next.js App Router
+ * - Tailwind: v4 CSS-first approach
+ * - Path Alias: @/* (standard Next.js convention)
+ * - UI Primitives: To be created as needed
+ * 
+ * Design tokens are defined in /design-system.json and wired here as CSS custom properties.
+ */
+
+@import "tailwindcss";
+
+/* ========================================
+   Design Tokens - Brand Colors
+   ======================================== */
+
+@theme {
+  /* Primary brand color - Yellow/Gold */
+  --color-gc-yellow: #F2B914;
+  
+  /* Background colors */
+  --color-gc-bg: #F7F7F7;
+  
+  /* Text colors */
+  --color-gc-black: #000000;
+  --color-gc-text: #111111;
+  
+  /* Gray scale */
+  --color-gc-gray-500: #686866;
+  --color-gc-gray-300: #AFAFAE;
+  
+  /* White */
+  --color-gc-white: #FFFFFF;
+}
+
+/* ========================================
+   CSS Custom Properties (for non-Tailwind usage)
+   ======================================== */
+
+:root {
+  /* Brand Colors */
+  --brand-yellow: #F2B914;
+  --brand-bg: #F7F7F7;
+  --brand-black: #000000;
+  --brand-text: #111111;
+  --brand-gray-500: #686866;
+  --brand-gray-300: #AFAFAE;
+  --brand-white: #FFFFFF;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--brand-bg);
+  color: var(--brand-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ========================================
+   Selection Styling
+   ======================================== */
+
+::selection {
+  background-color: var(--brand-yellow);
+  color: var(--brand-black);
+}
