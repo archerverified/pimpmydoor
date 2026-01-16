@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrackLayout } from "@/components/builder/track/TrackLayout";
-import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, TrackLiftType } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,7 @@ export default function LiftPage() {
             value={trackLiftType}
             onChange={(e) => {
               setShowError(false);
-              setTrackLiftType(e.target.value as "Standard Lift" | "High Lift" | "");
+              setTrackLiftType(e.target.value as TrackLiftType);
             }}
             placeholder="Select an option"
             id="lift-type"

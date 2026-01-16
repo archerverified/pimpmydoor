@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
-import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, ExtrasInsulation } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,7 @@ export default function InsulationPage() {
             value={extrasInsulation}
             onChange={(e) => {
               setShowError(false);
-              setExtrasInsulation(e.target.value as "None" | "Polystyrene (R6-R9)" | "Polyurethane (R12-R18)" | "");
+              setExtrasInsulation(e.target.value as ExtrasInsulation);
             }}
             placeholder="Select an option"
             id="extras-insulation"

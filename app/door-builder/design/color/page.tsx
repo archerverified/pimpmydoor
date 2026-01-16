@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DesignLayout } from "@/components/builder/design/DesignLayout";
-import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, DesignColor } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,7 @@ export default function ColorPage() {
             value={designColor}
             onChange={(e) => {
               setShowError(false);
-              setDesignColor(e.target.value as "White" | "Almond" | "Black" | "");
+              setDesignColor(e.target.value as DesignColor);
             }}
             placeholder="Select an option"
             id="door-color"

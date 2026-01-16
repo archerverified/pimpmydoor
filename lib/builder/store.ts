@@ -1,40 +1,40 @@
 import { create } from "zustand";
 
-type DesignCollection = "Traditional" | "Modern" | "Carriage House";
-type DesignStyle = "Raised Panel" | "Flush" | "Grooved";
-type DesignColor = "White" | "Almond" | "Black";
-type TrackSpringType = "Torsion" | "Extension";
-type TrackLiftType = "Standard Lift" | "High Lift";
-type TrackWindLoad = "None" | "Wind Reinforced";
-type ExtrasWindows = "No Windows" | "Top Panel Windows" | "Full View (Glass)";
-type ExtrasInsulation = "None" | "Polystyrene (R6-R9)" | "Polyurethane (R12-R18)";
-type ExtrasHardware = "None" | "Handles + Hinges (Black)" | "Handles + Hinges (Bronze)";
+export type DesignCollection = "" | "Traditional" | "Modern" | "Carriage House";
+export type DesignStyle = "" | "Raised Panel" | "Flush" | "Grooved";
+export type DesignColor = "" | "White" | "Almond" | "Black";
+export type TrackSpringType = "" | "Torsion" | "Extension";
+export type TrackLiftType = "" | "Standard Lift" | "High Lift";
+export type TrackWindLoad = "" | "None" | "Wind Reinforced";
+export type ExtrasWindows = "" | "No Windows" | "Top Panel Windows" | "Full View (Glass)";
+export type ExtrasInsulation = "" | "None" | "Polystyrene (R6-R9)" | "Polyurethane (R12-R18)";
+export type ExtrasHardware = "" | "None" | "Handles + Hinges (Black)" | "Handles + Hinges (Bronze)";
 
 interface BuilderStore {
   widthFeet: number;
   widthInches: number;
   heightFeet: number;
   heightInches: number;
-  designCollection: DesignCollection | "";
-  designStyle: DesignStyle | "";
-  designColor: DesignColor | "";
-  trackSpringType: TrackSpringType | "";
-  trackLiftType: TrackLiftType | "";
-  trackWindLoad: TrackWindLoad | "";
-  extrasWindows: ExtrasWindows | "";
-  extrasInsulation: ExtrasInsulation | "";
-  extrasHardware: ExtrasHardware | "";
+  designCollection: DesignCollection;
+  designStyle: DesignStyle;
+  designColor: DesignColor;
+  trackSpringType: TrackSpringType;
+  trackLiftType: TrackLiftType;
+  trackWindLoad: TrackWindLoad;
+  extrasWindows: ExtrasWindows;
+  extrasInsulation: ExtrasInsulation;
+  extrasHardware: ExtrasHardware;
   setWidth: (feet: number, inches: number) => void;
   setHeight: (feet: number, inches: number) => void;
-  setDesignCollection: (value: DesignCollection | "") => void;
-  setDesignStyle: (value: DesignStyle | "") => void;
-  setDesignColor: (value: DesignColor | "") => void;
-  setTrackSpringType: (value: TrackSpringType | "") => void;
-  setTrackLiftType: (value: TrackLiftType | "") => void;
-  setTrackWindLoad: (value: TrackWindLoad | "") => void;
-  setExtrasWindows: (value: ExtrasWindows | "") => void;
-  setExtrasInsulation: (value: ExtrasInsulation | "") => void;
-  setExtrasHardware: (value: ExtrasHardware | "") => void;
+  setDesignCollection: (value: DesignCollection) => void;
+  setDesignStyle: (value: DesignStyle) => void;
+  setDesignColor: (value: DesignColor) => void;
+  setTrackSpringType: (value: TrackSpringType) => void;
+  setTrackLiftType: (value: TrackLiftType) => void;
+  setTrackWindLoad: (value: TrackWindLoad) => void;
+  setExtrasWindows: (value: ExtrasWindows) => void;
+  setExtrasInsulation: (value: ExtrasInsulation) => void;
+  setExtrasHardware: (value: ExtrasHardware) => void;
   aiPreviewEnabled: boolean;
   aiPreviewB64: string | null;
   aiPreviewLastKey: string | null;
@@ -64,15 +64,15 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
   extrasHardware: "",
   setWidth: (feet, inches) => set({ widthFeet: feet, widthInches: inches }),
   setHeight: (feet, inches) => set({ heightFeet: feet, heightInches: inches }),
-  setDesignCollection: (value) => set({ designCollection: value as DesignCollection | "" }),
-  setDesignStyle: (value) => set({ designStyle: value as DesignStyle | "" }),
-  setDesignColor: (value) => set({ designColor: value as DesignColor | "" }),
-  setTrackSpringType: (value) => set({ trackSpringType: value as TrackSpringType | "" }),
-  setTrackLiftType: (value) => set({ trackLiftType: value as TrackLiftType | "" }),
-  setTrackWindLoad: (value) => set({ trackWindLoad: value as TrackWindLoad | "" }),
-  setExtrasWindows: (value) => set({ extrasWindows: value as ExtrasWindows | "" }),
-  setExtrasInsulation: (value) => set({ extrasInsulation: value as ExtrasInsulation | "" }),
-  setExtrasHardware: (value) => set({ extrasHardware: value as ExtrasHardware | "" }),
+  setDesignCollection: (value) => set({ designCollection: value }),
+  setDesignStyle: (value) => set({ designStyle: value }),
+  setDesignColor: (value) => set({ designColor: value }),
+  setTrackSpringType: (value) => set({ trackSpringType: value }),
+  setTrackLiftType: (value) => set({ trackLiftType: value }),
+  setTrackWindLoad: (value) => set({ trackWindLoad: value }),
+  setExtrasWindows: (value) => set({ extrasWindows: value }),
+  setExtrasInsulation: (value) => set({ extrasInsulation: value }),
+  setExtrasHardware: (value) => set({ extrasHardware: value }),
   aiPreviewEnabled: true,
   aiPreviewB64: null,
   aiPreviewLastKey: null,

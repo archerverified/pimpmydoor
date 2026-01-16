@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrackLayout } from "@/components/builder/track/TrackLayout";
-import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, TrackWindLoad } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,7 @@ export default function WindLoadPage() {
             value={trackWindLoad}
             onChange={(e) => {
               setShowError(false);
-              setTrackWindLoad(e.target.value as "None" | "Wind Reinforced" | "");
+              setTrackWindLoad(e.target.value as TrackWindLoad);
             }}
             placeholder="Select an option"
             id="wind-load"

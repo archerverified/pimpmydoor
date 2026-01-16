@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
-import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, ExtrasHardware } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -46,7 +46,7 @@ export default function HardwarePage() {
             value={extrasHardware}
             onChange={(e) => {
               setShowError(false);
-              setExtrasHardware(e.target.value as "None" | "Handles + Hinges (Black)" | "Handles + Hinges (Bronze)" | "");
+              setExtrasHardware(e.target.value as ExtrasHardware);
             }}
             placeholder="Select an option"
             id="extras-hardware"
