@@ -45,12 +45,10 @@ export function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ className, ...p }) => (
-          <ChevronLeft className={cn("h-4 w-4", className)} {...p} />
-        ),
-        IconRight: ({ className, ...p }) => (
-          <ChevronRight className={cn("h-4 w-4", className)} {...p} />
-        ),
+        Chevron: ({ className, orientation, ...props }) => {
+          const Icon = orientation === "left" ? ChevronLeft : ChevronRight;
+          return <Icon className={cn("h-4 w-4", className)} {...props} />;
+        },
       }}
       {...props}
     />
