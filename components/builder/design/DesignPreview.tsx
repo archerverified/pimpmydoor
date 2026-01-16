@@ -27,8 +27,15 @@ export function DesignPreview() {
   const [error, setError] = useState<string | null>(null);
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
-  const hasTrackOptions = (trackSpringType && trackSpringType !== "") || (trackLiftType && trackLiftType !== "") || (trackWindLoad && trackWindLoad !== "" && trackWindLoad !== "None");
-  const hasExtras = (extrasWindows && extrasWindows !== "" && extrasWindows !== "No Windows") || (extrasInsulation && extrasInsulation !== "" && extrasInsulation !== "None") || (extrasHardware && extrasHardware !== "" && extrasHardware !== "None");
+  const hasTrackOptions =
+    trackSpringType !== "" ||
+    trackLiftType !== "" ||
+    (trackWindLoad !== "" && trackWindLoad !== "None");
+
+  const hasExtras =
+    (extrasWindows !== "" && extrasWindows !== "No Windows") ||
+    (extrasInsulation !== "" && extrasInsulation !== "None") ||
+    (extrasHardware !== "" && extrasHardware !== "None");
 
   useEffect(() => {
     if (!aiPreviewEnabled || !aiPreviewRequestedKey) {
@@ -122,17 +129,17 @@ export function DesignPreview() {
               {hasTrackOptions && (
                 <>
                   <div className="w-full h-px bg-gc-gray-300 my-2" />
-                  {trackSpringType && (
+                  {trackSpringType !== "" && (
                     <p className="text-sm text-gc-gray-500 mb-1">
                       Springs: {trackSpringType}
                     </p>
                   )}
-                  {trackLiftType && (
+                  {trackLiftType !== "" && (
                     <p className="text-sm text-gc-gray-500 mb-1">
                       Lift: {trackLiftType}
                     </p>
                   )}
-                  {trackWindLoad && trackWindLoad !== "None" && trackWindLoad !== "" && (
+                  {trackWindLoad !== "" && trackWindLoad !== "None" && (
                     <p className="text-sm text-gc-gray-500 mb-3">
                       Wind Load: {trackWindLoad}
                     </p>
@@ -142,17 +149,17 @@ export function DesignPreview() {
               {hasExtras && (
                 <>
                   <div className="w-full h-px bg-gc-gray-300 my-2" />
-                  {extrasWindows && extrasWindows !== "No Windows" && (
+                  {extrasWindows !== "" && extrasWindows !== "No Windows" && (
                     <p className="text-sm text-gc-gray-500 mb-1">
                       Windows: {extrasWindows}
                     </p>
                   )}
-                  {extrasInsulation && extrasInsulation !== "None" && (
+                  {extrasInsulation !== "" && extrasInsulation !== "None" && (
                     <p className="text-sm text-gc-gray-500 mb-1">
                       Insulation: {extrasInsulation}
                     </p>
                   )}
-                  {extrasHardware && extrasHardware !== "None" && (
+                  {extrasHardware !== "" && extrasHardware !== "None" && (
                     <p className="text-sm text-gc-gray-500">
                       Hardware: {extrasHardware}
                     </p>
