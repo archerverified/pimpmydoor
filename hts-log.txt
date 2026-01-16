@@ -1,0 +1,12 @@
+HTTrack3.49-2+htsswf+htsjava launched on Wed, 14 Jan 2026 23:53:41 at https://doorbuilder.garagedoorsupplyhouse.com/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -WC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://doorbuilder.garagedoorsupplyhouse.com/ -O1 "C:\Users\OxGh0\OneDrive\Desktop\Copied Websites\Companies\Pimp My Door" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+23:54:34	Error: 	"Bad Request" (400) at link https://www.googletagmanager.com/gtm.js?id= (from https://doorbuilder.garagedoorsupplyhouse.com/)
+
+HTTrack Website Copier/3.49-2 mirror complete in 2 minutes 24 seconds : 14 links scanned, 12 files written (20130620 bytes overall) [19913894 bytes received at 138290 bytes/sec], 260529 bytes transferred using HTTP compression in 3 files, ratio 12%, 1.8 requests per connection
+(1 errors, 0 warnings, 0 messages)
