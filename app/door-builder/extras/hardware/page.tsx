@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,7 +9,8 @@ import { Button } from "@/components/ui/Button";
 
 export default function HardwarePage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, extrasHardware, setExtrasHardware, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, extrasHardware, setExtrasHardware, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
@@ -17,6 +19,11 @@ export default function HardwarePage() {
   };
 
   const handleContinue = () => {
+    if (extrasHardware === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("extras:hardware");
     requestAIPreviewFor("extras:hardware");
     router.push("/door-builder/summary");
   };
@@ -24,9 +31,6 @@ export default function HardwarePage() {
   return (
     <ExtrasLayout step="hardware">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 4
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Choose decorative hardware (optional).
         </p>
@@ -40,20 +44,29 @@ export default function HardwarePage() {
           </label>
           <Select
             value={extrasHardware}
-            onChange={(e) => setExtrasHardware(e.target.value as "None" | "Handles + Hinges (Black)" | "Handles + Hinges (Bronze)")}
+            onChange={(e) => {
+              setShowError(false);
+              setExtrasHardware(e.target.value as "None" | "Handles + Hinges (Black)" | "Handles + Hinges (Bronze)" | "");
+            }}
+            placeholder="Select an option"
             id="extras-hardware"
           >
             <option value="None">None</option>
             <option value="Handles + Hinges (Black)">Handles + Hinges (Black)</option>
             <option value="Handles + Hinges (Bronze)">Handles + Hinges (Bronze)</option>
           </Select>
+          {showError && extrasHardware === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Hardware here
+            </p>
+          )}
         </div>
 
         <div className="mt-10 flex gap-4">
           <Button type="button" variant="ghost" onClick={handleBack}>
             Back
           </Button>
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={extrasHardware === ""}>
             Continue
           </Button>
         </div>

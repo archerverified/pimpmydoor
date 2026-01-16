@@ -15,15 +15,15 @@ interface BuilderStore {
   widthInches: number;
   heightFeet: number;
   heightInches: number;
-  designCollection: DesignCollection;
-  designStyle: DesignStyle;
-  designColor: DesignColor;
-  trackSpringType: TrackSpringType;
-  trackLiftType: TrackLiftType;
-  trackWindLoad: TrackWindLoad;
-  extrasWindows: ExtrasWindows;
-  extrasInsulation: ExtrasInsulation;
-  extrasHardware: ExtrasHardware;
+  designCollection: DesignCollection | "";
+  designStyle: DesignStyle | "";
+  designColor: DesignColor | "";
+  trackSpringType: TrackSpringType | "";
+  trackLiftType: TrackLiftType | "";
+  trackWindLoad: TrackWindLoad | "";
+  extrasWindows: ExtrasWindows | "";
+  extrasInsulation: ExtrasInsulation | "";
+  extrasHardware: ExtrasHardware | "";
   setWidth: (feet: number, inches: number) => void;
   setHeight: (feet: number, inches: number) => void;
   setDesignCollection: (value: DesignCollection) => void;
@@ -43,6 +43,8 @@ interface BuilderStore {
   requestAIPreviewFor: (key: string) => void;
   commitAIPreview: (key: string, b64: string) => void;
   setAIPreviewEnabled: (enabled: boolean) => void;
+  confirmedSteps: Record<string, true>;
+  confirmStep: (key: string) => void;
   reset: () => void;
 }
 
@@ -51,26 +53,26 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
   widthInches: 0,
   heightFeet: 7,
   heightInches: 0,
-  designCollection: "Traditional",
-  designStyle: "Raised Panel",
-  designColor: "White",
-  trackSpringType: "Torsion",
-  trackLiftType: "Standard Lift",
-  trackWindLoad: "None",
-  extrasWindows: "No Windows",
-  extrasInsulation: "None",
-  extrasHardware: "None",
+  designCollection: "",
+  designStyle: "",
+  designColor: "",
+  trackSpringType: "",
+  trackLiftType: "",
+  trackWindLoad: "",
+  extrasWindows: "",
+  extrasInsulation: "",
+  extrasHardware: "",
   setWidth: (feet, inches) => set({ widthFeet: feet, widthInches: inches }),
   setHeight: (feet, inches) => set({ heightFeet: feet, heightInches: inches }),
-  setDesignCollection: (value) => set({ designCollection: value }),
-  setDesignStyle: (value) => set({ designStyle: value }),
-  setDesignColor: (value) => set({ designColor: value }),
-  setTrackSpringType: (value) => set({ trackSpringType: value }),
-  setTrackLiftType: (value) => set({ trackLiftType: value }),
-  setTrackWindLoad: (value) => set({ trackWindLoad: value }),
-  setExtrasWindows: (value) => set({ extrasWindows: value }),
-  setExtrasInsulation: (value) => set({ extrasInsulation: value }),
-  setExtrasHardware: (value) => set({ extrasHardware: value }),
+  setDesignCollection: (value) => set({ designCollection: value as DesignCollection | "" }),
+  setDesignStyle: (value) => set({ designStyle: value as DesignStyle | "" }),
+  setDesignColor: (value) => set({ designColor: value as DesignColor | "" }),
+  setTrackSpringType: (value) => set({ trackSpringType: value as TrackSpringType | "" }),
+  setTrackLiftType: (value) => set({ trackLiftType: value as TrackLiftType | "" }),
+  setTrackWindLoad: (value) => set({ trackWindLoad: value as TrackWindLoad | "" }),
+  setExtrasWindows: (value) => set({ extrasWindows: value as ExtrasWindows | "" }),
+  setExtrasInsulation: (value) => set({ extrasInsulation: value as ExtrasInsulation | "" }),
+  setExtrasHardware: (value) => set({ extrasHardware: value as ExtrasHardware | "" }),
   aiPreviewEnabled: true,
   aiPreviewB64: null,
   aiPreviewLastKey: null,
@@ -91,25 +93,31 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
       aiPreviewRequestedKey: null,
     })),
   setAIPreviewEnabled: (enabled) => set({ aiPreviewEnabled: enabled }),
+  confirmedSteps: {},
+  confirmStep: (key) =>
+    set((state) => ({
+      confirmedSteps: { ...state.confirmedSteps, [key]: true },
+    })),
   reset: () => set({
     widthFeet: 8,
     widthInches: 0,
     heightFeet: 7,
     heightInches: 0,
-    designCollection: "Traditional",
-    designStyle: "Raised Panel",
-    designColor: "White",
-    trackSpringType: "Torsion",
-    trackLiftType: "Standard Lift",
-    trackWindLoad: "None",
-    extrasWindows: "No Windows",
-    extrasInsulation: "None",
-    extrasHardware: "None",
+    designCollection: "",
+    designStyle: "",
+    designColor: "",
+    trackSpringType: "",
+    trackLiftType: "",
+    trackWindLoad: "",
+    extrasWindows: "",
+    extrasInsulation: "",
+    extrasHardware: "",
     aiPreviewEnabled: true,
     aiPreviewB64: null,
     aiPreviewLastKey: null,
     aiPreviewRequestedKey: null,
     aiPreviewGeneratedKeys: {},
+    confirmedSteps: {},
   }),
 }));
 

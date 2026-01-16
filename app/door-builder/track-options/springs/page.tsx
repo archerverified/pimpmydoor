@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrackLayout } from "@/components/builder/track/TrackLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,11 +9,17 @@ import { Button } from "@/components/ui/Button";
 
 export default function SpringsPage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, trackSpringType, setTrackSpringType, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, trackSpringType, setTrackSpringType, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
   const handleContinue = () => {
+    if (trackSpringType === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("track:springs");
     requestAIPreviewFor("track:springs");
     router.push("/door-builder/track-options/lift");
   };
@@ -20,9 +27,6 @@ export default function SpringsPage() {
   return (
     <TrackLayout step="springs">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 3
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Choose your spring type.
         </p>
@@ -36,16 +40,25 @@ export default function SpringsPage() {
           </label>
           <Select
             value={trackSpringType}
-            onChange={(e) => setTrackSpringType(e.target.value as "Torsion" | "Extension")}
+            onChange={(e) => {
+              setShowError(false);
+              setTrackSpringType(e.target.value as "Torsion" | "Extension" | "");
+            }}
+            placeholder="Select an option"
             id="spring-type"
           >
             <option value="Torsion">Torsion</option>
             <option value="Extension">Extension</option>
           </Select>
+          {showError && trackSpringType === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Springs here
+            </p>
+          )}
         </div>
 
         <div className="mt-10">
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={trackSpringType === ""}>
             Continue
           </Button>
         </div>

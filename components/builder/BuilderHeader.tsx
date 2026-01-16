@@ -4,14 +4,20 @@ import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useBuilderStore } from "@/lib/builder/store";
+import { useCartStore } from "@/lib/cart/store";
 
 export function BuilderHeader() {
   const router = useRouter();
   const reset = useBuilderStore((state) => state.reset);
+  const itemCount = useCartStore((state) => state.itemCount());
 
   const handleStartOver = () => {
     reset();
     router.push("/door-builder/setup/select-size");
+  };
+
+  const handleCartClick = () => {
+    router.push("/cart");
   };
   return (
     <header className="flex items-start justify-between px-8 pt-6 pb-4">
@@ -45,10 +51,17 @@ export function BuilderHeader() {
       {/* Right: Cart and Start Over */}
       <div className="flex flex-col items-end gap-2">
         <button
-          className="w-12 h-12 bg-gc-yellow flex items-center justify-center rounded"
+          type="button"
+          onClick={handleCartClick}
+          className="w-12 h-12 bg-gc-yellow flex items-center justify-center rounded relative"
           aria-label="View shopping cart"
         >
           <ShoppingCart className="w-6 h-6 text-gc-black" />
+          {itemCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-gc-black text-gc-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              {itemCount}
+            </span>
+          )}
         </button>
         <button
           type="button"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ExtrasLayout } from "@/components/builder/extras/ExtrasLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,11 +9,17 @@ import { Button } from "@/components/ui/Button";
 
 export default function WindowsPage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, extrasWindows, setExtrasWindows, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, extrasWindows, setExtrasWindows, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
   const handleContinue = () => {
+    if (extrasWindows === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("extras:windows");
     requestAIPreviewFor("extras:windows");
     router.push("/door-builder/extras/insulation");
   };
@@ -20,9 +27,6 @@ export default function WindowsPage() {
   return (
     <ExtrasLayout step="windows">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 4
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Add windows (optional).
         </p>
@@ -36,17 +40,26 @@ export default function WindowsPage() {
           </label>
           <Select
             value={extrasWindows}
-            onChange={(e) => setExtrasWindows(e.target.value as "No Windows" | "Top Panel Windows" | "Full View (Glass)")}
+            onChange={(e) => {
+              setShowError(false);
+              setExtrasWindows(e.target.value as "No Windows" | "Top Panel Windows" | "Full View (Glass)" | "");
+            }}
+            placeholder="Select an option"
             id="extras-windows"
           >
             <option value="No Windows">No Windows</option>
             <option value="Top Panel Windows">Top Panel Windows</option>
             <option value="Full View (Glass)">Full View (Glass)</option>
           </Select>
+          {showError && extrasWindows === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Windows here
+            </p>
+          )}
         </div>
 
         <div className="mt-10">
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={extrasWindows === ""}>
             Continue
           </Button>
         </div>

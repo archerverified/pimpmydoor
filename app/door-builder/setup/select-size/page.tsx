@@ -16,9 +16,11 @@ export default function SelectSizePage() {
     setWidth,
     setHeight,
     requestAIPreviewFor,
+    confirmStep,
   } = useBuilderStore();
 
   const handleContinue = () => {
+    confirmStep("setup:size");
     requestAIPreviewFor("setup:size");
     router.push("/door-builder/design");
   };

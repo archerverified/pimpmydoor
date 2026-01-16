@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrackLayout } from "@/components/builder/track/TrackLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,7 +9,8 @@ import { Button } from "@/components/ui/Button";
 
 export default function WindLoadPage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, trackWindLoad, setTrackWindLoad, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, trackWindLoad, setTrackWindLoad, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
@@ -17,6 +19,11 @@ export default function WindLoadPage() {
   };
 
   const handleContinue = () => {
+    if (trackWindLoad === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("track:windload");
     requestAIPreviewFor("track:windload");
     router.push("/door-builder/extras");
   };
@@ -24,9 +31,6 @@ export default function WindLoadPage() {
   return (
     <TrackLayout step="windload">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 3
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Choose wind load reinforcement.
         </p>
@@ -40,19 +44,28 @@ export default function WindLoadPage() {
           </label>
           <Select
             value={trackWindLoad}
-            onChange={(e) => setTrackWindLoad(e.target.value as "None" | "Wind Reinforced")}
+            onChange={(e) => {
+              setShowError(false);
+              setTrackWindLoad(e.target.value as "None" | "Wind Reinforced" | "");
+            }}
+            placeholder="Select an option"
             id="wind-load"
           >
             <option value="None">None</option>
             <option value="Wind Reinforced">Wind Reinforced</option>
           </Select>
+          {showError && trackWindLoad === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Wind Load here
+            </p>
+          )}
         </div>
 
         <div className="mt-10 flex gap-4">
           <Button type="button" variant="ghost" onClick={handleBack}>
             Back
           </Button>
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={trackWindLoad === ""}>
             Continue
           </Button>
         </div>

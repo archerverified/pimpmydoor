@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DesignLayout } from "@/components/builder/design/DesignLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,11 +9,17 @@ import { Button } from "@/components/ui/Button";
 
 export default function CollectionPage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, designCollection, setDesignCollection, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, designCollection, setDesignCollection, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
   const handleContinue = () => {
+    if (designCollection === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("design:collection");
     requestAIPreviewFor("design:collection");
     router.push("/door-builder/design/style");
   };
@@ -20,9 +27,6 @@ export default function CollectionPage() {
   return (
     <DesignLayout step="collection">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 2
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Choose your door collection.
         </p>
@@ -36,17 +40,26 @@ export default function CollectionPage() {
           </label>
           <Select
             value={designCollection}
-            onChange={(e) => setDesignCollection(e.target.value as "Traditional" | "Modern" | "Carriage House")}
+            onChange={(e) => {
+              setShowError(false);
+              setDesignCollection(e.target.value as "Traditional" | "Modern" | "Carriage House" | "");
+            }}
+            placeholder="Select an option"
             id="door-collection"
           >
             <option value="Traditional">Traditional</option>
             <option value="Modern">Modern</option>
             <option value="Carriage House">Carriage House</option>
           </Select>
+          {showError && designCollection === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Door Collection here
+            </p>
+          )}
         </div>
 
         <div className="mt-10">
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={designCollection === ""}>
             Continue
           </Button>
         </div>

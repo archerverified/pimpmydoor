@@ -1,12 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BuilderShell } from "@/components/builder/BuilderShell";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
+import { useCartStore } from "@/lib/cart/store";
+import {
+  buildDoorConfigurationFromStore,
+  configToId,
+  computePlaceholderPriceCents,
+  newLineItemId,
+} from "@/lib/builder/toCartItem";
 import { Button } from "@/components/ui/Button";
 
 export default function SummaryPage() {
   const router = useRouter();
+  const builderStore = useBuilderStore();
+  const addItem = useCartStore((state) => state.addItem);
   const {
     widthFeet,
     widthInches,
@@ -21,13 +31,58 @@ export default function SummaryPage() {
     extrasWindows,
     extrasInsulation,
     extrasHardware,
-  } = useBuilderStore();
+    aiPreviewB64,
+    confirmStep,
+  } = builderStore;
+
+  // Confirm all steps on mount so SelectionsSummary displays all values
+  useEffect(() => {
+    confirmStep("setup:size");
+    confirmStep("design:collection");
+    confirmStep("design:style");
+    confirmStep("design:color");
+    confirmStep("track:springs");
+    confirmStep("track:lift");
+    confirmStep("track:windload");
+    confirmStep("extras:windows");
+    confirmStep("extras:insulation");
+    confirmStep("extras:hardware");
+  }, [confirmStep]);
 
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
-  const handleGetQuote = () => {
-    // TODO: Implement quote functionality
-    console.log("Get Quote clicked");
+  const handleAddToCart = () => {
+    // Build configuration from builder store
+    const config = buildDoorConfigurationFromStore(() => builderStore);
+    
+    // Compute configurationId and price
+    const configurationId = configToId(config);
+    const unitPriceCents = computePlaceholderPriceCents(config);
+    const lineItemId = newLineItemId();
+    
+    // Get AI preview image if available
+    const imageDataUrl = aiPreviewB64
+      ? `data:image/png;base64,${aiPreviewB64}`
+      : null;
+    
+    // Add to cart
+    addItem({
+      lineItemId,
+      configurationId,
+      name: "Garage Door",
+      configuration: config,
+      qty: 1,
+      unitPriceCents,
+      imageDataUrl,
+      currency: "usd",
+    });
+    
+    // Navigate to cart
+    router.push("/cart");
+  };
+
+  const handleViewCart = () => {
+    router.push("/cart");
   };
 
   const handleEditSelections = () => {
@@ -106,8 +161,11 @@ export default function SummaryPage() {
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button type="button" onClick={handleGetQuote}>
-              Get Quote
+            <Button type="button" onClick={handleAddToCart}>
+              Add to Cart
+            </Button>
+            <Button type="button" variant="ghost" onClick={handleViewCart}>
+              View Cart
             </Button>
             <Button type="button" variant="ghost" onClick={handleEditSelections}>
               Edit Selections

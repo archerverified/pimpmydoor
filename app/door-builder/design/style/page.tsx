@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DesignLayout } from "@/components/builder/design/DesignLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,7 +9,8 @@ import { Button } from "@/components/ui/Button";
 
 export default function StylePage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, designStyle, setDesignStyle, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, designStyle, setDesignStyle, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
@@ -17,6 +19,11 @@ export default function StylePage() {
   };
 
   const handleContinue = () => {
+    if (designStyle === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("design:style");
     requestAIPreviewFor("design:style");
     router.push("/door-builder/design/color");
   };
@@ -24,9 +31,6 @@ export default function StylePage() {
   return (
     <DesignLayout step="style">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 2
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Choose your door style.
         </p>
@@ -40,20 +44,29 @@ export default function StylePage() {
           </label>
           <Select
             value={designStyle}
-            onChange={(e) => setDesignStyle(e.target.value as "Raised Panel" | "Flush" | "Grooved")}
+            onChange={(e) => {
+              setShowError(false);
+              setDesignStyle(e.target.value as "Raised Panel" | "Flush" | "Grooved" | "");
+            }}
+            placeholder="Select an option"
             id="door-style"
           >
             <option value="Raised Panel">Raised Panel</option>
             <option value="Flush">Flush</option>
             <option value="Grooved">Grooved</option>
           </Select>
+          {showError && designStyle === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Door Style here
+            </p>
+          )}
         </div>
 
         <div className="mt-10 flex gap-4">
           <Button type="button" variant="ghost" onClick={handleBack}>
             Back
           </Button>
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={designStyle === ""}>
             Continue
           </Button>
         </div>

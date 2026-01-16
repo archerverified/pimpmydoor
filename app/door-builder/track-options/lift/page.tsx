@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TrackLayout } from "@/components/builder/track/TrackLayout";
 import { useBuilderStore, formatFtIn } from "@/lib/builder/store";
@@ -8,7 +9,8 @@ import { Button } from "@/components/ui/Button";
 
 export default function LiftPage() {
   const router = useRouter();
-  const { widthFeet, widthInches, heightFeet, heightInches, trackLiftType, setTrackLiftType, requestAIPreviewFor } = useBuilderStore();
+  const { widthFeet, widthInches, heightFeet, heightInches, trackLiftType, setTrackLiftType, requestAIPreviewFor, confirmStep } = useBuilderStore();
+  const [showError, setShowError] = useState(false);
   
   const sizeText = `${formatFtIn(widthFeet, widthInches)} x ${formatFtIn(heightFeet, heightInches)}`;
 
@@ -17,6 +19,11 @@ export default function LiftPage() {
   };
 
   const handleContinue = () => {
+    if (trackLiftType === "") {
+      setShowError(true);
+      return;
+    }
+    confirmStep("track:lift");
     requestAIPreviewFor("track:lift");
     router.push("/door-builder/track-options/windload");
   };
@@ -24,9 +31,6 @@ export default function LiftPage() {
   return (
     <TrackLayout step="lift">
       <div>
-        <h1 className="text-sm tracking-widest font-semibold text-gc-text mb-2">
-          STEP 3
-        </h1>
         <p className="text-base font-semibold text-gc-text mb-4">
           Choose your track lift type.
         </p>
@@ -40,19 +44,28 @@ export default function LiftPage() {
           </label>
           <Select
             value={trackLiftType}
-            onChange={(e) => setTrackLiftType(e.target.value as "Standard Lift" | "High Lift")}
+            onChange={(e) => {
+              setShowError(false);
+              setTrackLiftType(e.target.value as "Standard Lift" | "High Lift" | "");
+            }}
+            placeholder="Select an option"
             id="lift-type"
           >
             <option value="Standard Lift">Standard Lift</option>
             <option value="High Lift">High Lift</option>
           </Select>
+          {showError && trackLiftType === "" && (
+            <p className="text-xs text-red-600 mt-2">
+              Please choose your Lift here
+            </p>
+          )}
         </div>
 
         <div className="mt-10 flex gap-4">
           <Button type="button" variant="ghost" onClick={handleBack}>
             Back
           </Button>
-          <Button type="button" onClick={handleContinue}>
+          <Button type="button" onClick={handleContinue} disabled={trackLiftType === ""}>
             Continue
           </Button>
         </div>

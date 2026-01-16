@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { BuilderHeader } from "./BuilderHeader";
 import { BuilderProgress } from "./BuilderProgress";
+import { SelectionsSummary } from "./SelectionsSummary";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
@@ -105,6 +106,11 @@ export function BuilderShell({
                   <ArrowLeft className="w-4 h-4" />
                   Back
                 </button>
+              </div>
+            )}
+            {showBack && (
+              <div className="mb-6">
+                <SelectionsSummary />
               </div>
             )}
             {children}
