@@ -10,7 +10,7 @@ export type ExtrasWindows = "" | "No Windows" | "Top Panel Windows" | "Full View
 export type ExtrasInsulation = "" | "None" | "Polystyrene (R6-R9)" | "Polyurethane (R12-R18)";
 export type ExtrasHardware = "" | "None" | "Handles + Hinges (Black)" | "Handles + Hinges (Bronze)";
 
-interface BuilderStore {
+export interface BuilderStore {
   widthFeet: number;
   widthInches: number;
   heightFeet: number;
