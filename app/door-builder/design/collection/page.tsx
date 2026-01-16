@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DesignLayout } from "@/components/builder/design/DesignLayout";
-import { useBuilderStore, formatFtIn, DesignCollection } from "@/lib/builder/store";
+import { useBuilderStore, formatFtIn, DesignCollection, isDesignCollection } from "@/lib/builder/store";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -42,7 +42,10 @@ export default function CollectionPage() {
             value={designCollection}
             onChange={(e) => {
               setShowError(false);
-              setDesignCollection(e.target.value as DesignCollection);
+              const value = e.target.value;
+              if (isDesignCollection(value)) {
+                setDesignCollection(value);
+              }
             }}
             placeholder="Select an option"
             id="door-collection"

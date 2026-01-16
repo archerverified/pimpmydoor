@@ -122,6 +122,13 @@ export const useBuilderStore = create<BuilderStore>((set) => ({
 }));
 
 /**
+ * Type guard for DesignCollection
+ */
+export function isDesignCollection(value: string): value is DesignCollection {
+  return value === "" || value === "Traditional" || value === "Modern" || value === "Carriage House";
+}
+
+/**
  * Format feet and inches as a string (e.g., "8' 0\"")
  */
 export function formatFtIn(feet: number, inches: number): string {
