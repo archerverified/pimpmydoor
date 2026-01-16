@@ -45,8 +45,10 @@ export function ScheduleInstallationBookingForm({
 
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
+  type FormEl = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<FormEl>
   ) => {
     setFormData({
       ...formData,
